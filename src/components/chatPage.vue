@@ -1,17 +1,17 @@
 <template>
   <!-- remove_modal -->
-  <div class="background">
+  <!-- <div class="background">
     <div class="remove_modal">
       삭제할까요?
       <button>확인</button>
       <button>취소</button>
     </div>
-  </div>
+  </div> -->
   <!-- chating -->
   <div style="position:fixed; top:20%; left: 20%;">
     <div class="chat_area_wrap">
       <li class="chat_list" v-for="(chat,i) in chatData" :key="i">
-        <div class="user_pofile">
+        <div class="user_pofile" :class="{'my_chat': chat.name === this.myName}">
           <div class="img_area" style="margin-right:10px">
             <!-- <img :src="`${chat.img}`" alt=""> -->
             <span>
@@ -24,9 +24,9 @@
               <span style="background:#fff; display: inline-block; padding: 3px; border-radius: 5px;">
                 <div>{{chat.contents}}</div>
               </span>
-              <span style="font-size: 11px;">
+              <em class="chat_time" style="font-size: 11px;">
                 {{chat.time}}
-              </span>
+              </em>
               <span class="reply" @click="replyOn(chat, i)">
                 답장
               </span>
@@ -73,21 +73,23 @@ export default {
       answerState: false,
       repluser: '',
       repContent:'',
+      myName: 'sky',
     }
   },
 
   methods: {
     timer(dataIdx) {
       setTimeout(()=>{
-        let idx = Number(dataIdx[0])
+        let idx = dataIdx[0]-1
+        console.log(dataIdx[0])
         console.log('dataIdx',dataIdx)
         console.log(idx)
         console.log(parseInt(idx))
         console.log(Number(idx))
         console.log('5초지남')
         console.log(this.chatData)
-        this.chatData[this.chatData.length-1].remove = true
-      },10000)
+        this.chatData[idx].remove = true
+      },5000)
     },
 
     chatIn() {
@@ -118,8 +120,10 @@ export default {
       this.answerState = false
     },
     removeContent(i) {
-      console.log(i)
-      this.chatData.splice(i,1)
+      this.chatData[i].contents = '삭제된 메세지입니다.'
+      setTimeout(()=> {
+        this.chatData.splice(i,1)
+      },5000)
     }
   }
 
@@ -143,6 +147,7 @@ export default {
     background: rgb(174, 234, 250);
   }
   .chat_list {
+    margin-bottom: 10px;
   }
   .img_area img{
     width: 60px;
@@ -159,12 +164,12 @@ export default {
   }
   .answer {
     display: flex;
-    width: 90%;
+    width: 99%;
     height: 40PX;
     align-items: center;
     justify-content: space-between;
     position:absolute;
-    bottom: 80px;
+    bottom: 85px;
     background: rgba(255, 255, 255, 0.8)
   }
   .answer button {
@@ -186,5 +191,31 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+  }
+  .my_chat {
+    justify-content: end;
+  }
+  .my_chat .nick > span{
+    display: none;
+  }
+  .my_chat .img_area {
+    display: none;
+  }
+  .my_chat .nick p {
+    display: flex;
+    align-items: center;
+  }
+  .my_chat .nick p span {
+    display: none;
+  }
+  .my_chat .nick p em {
+    align-self: flex-end;
+  }
+  .my_chat .nick p span:nth-child(3) {
+    order: -1;
+    margin-left: 10px;
+  }
+  .my_chat .nick p span:nth-child(4) {
+    order: -2;
   }
 </style>
