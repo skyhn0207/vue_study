@@ -33,9 +33,9 @@
               <span class="delete" v-if="(chat.remove==false)" @click="removeContent(i)">
                 삭제
               </span>
-            </p>
+              </p>
+            </div>
           </div>
-        </div>
       </li>
     </div>
     
@@ -60,20 +60,22 @@ export default {
   data() {
     return {
       chatData:[
-        {img : 'sample1', name : 'beom', contents : '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요', time : '14:00',remove:false},
-        {img : 'sample2', name : 'sky', contents : '네 안녕하세요', time : '14:00', remove: false},
-        {img : 'sample1', name : 'beom', contents : '숙제는', time : '14:03', remove:false},
-        {img : 'sample1', name : 'beom', contents : '다해 오셨나요?', time : '14:10', remove:false},
-        {img : 'sample2', name : 'sky', contents : '네!', time : '14:10', remove:false},
-        {img : 'sample2', name : 'sky', contents : '다했습니다', time : '14:10', remove:false},
-        {img : 'sample2', name : 'sky', contents : '더 할거 없나요?', time : '14:11', remove:false},
-        {img : 'sample1', name : 'beom', contents : '아니요 충분합니다', time : '14:14', remove:false},
+        {img : 'sample1', name : 'beom', contents : '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요', time : '14:00',replyState:false, remove:false},
+        {img : 'sample2', name : 'sky', contents : '네 안녕하세요', time : '14:00',replyState:false, remove: false},
+        {img : 'sample1', name : 'beom', contents : '숙제는', time : '14:03',replyState:false,remove:false},
+        {img : 'sample1', name : 'beom', contents : '다해 오셨나요?', time : '14:10',replyState:false, remove:false},
+        {img : 'sample2', name : 'sky', contents : '네!', time : '14:10',replyState:false, remove:false},
+        {img : 'sample2', name : 'sky', contents : '다했습니다', time : '14:10',replyState:false, remove:false},
+        {img : 'sample2', name : 'sky', contents : '더 할거 없나요?', time : '14:11',replyState:false, remove:false},
+        {img : 'sample1', name : 'beom', contents : '아니요 충분합니다', time : '14:14', replyState:false, remove:false},
       ],
       chating: '',
       answerState: false,
       repluser: '',
       repContent:'',
       myName: 'sky',
+      replyState: 'false',
+      scrollPosition: 0,
     }
   },
 
@@ -98,7 +100,8 @@ export default {
         name: 'sky',
         contents: this.chating,
         time: '14:15',
-        remove: false
+        remove: false,
+        replyState: this.replyState,
       }
       if(this.chating=='') {
         return false;
@@ -124,8 +127,21 @@ export default {
       setTimeout(()=> {
         this.chatData.splice(i,1)
       },5000)
-    }
+    },
+    scrollToEnd() {
+      const chatWarp = document.querySelector('.chat_area_wrap');
+      const scrollHeight = chatWarp.scrollHeight;
+      chatWarp.scrollTop = scrollHeight
+    },
+    
+  },
+  mounted() {
+    this.scrollToEnd();
+  },
+  updated() {
+    this.scrollToEnd();
   }
+  
 
 }
 </script>
